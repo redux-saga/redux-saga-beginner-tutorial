@@ -4,7 +4,7 @@
   "description": "Redux Saga beginner tutorial",
   "main": "lib/index.js",
   "scripts": {
-    "test": "babel-node saga.spec.js | tap-spec",
+    "test": "babel-node sagas.spec.js | tap-spec",
     "start": "budo main.js:build.js --dir ./ --verbose  --live -- -t babelify"
   },
   "repository": {
