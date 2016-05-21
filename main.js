@@ -9,10 +9,13 @@ import Counter from './Counter'
 import reducer from './reducers'
 import { helloSaga, watchIncrementAsync } from './sagas'
 
+const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
   reducer,
-  applyMiddleware(createSagaMiddleware(helloSaga, watchIncrementAsync))
+  applyMiddleware(sagaMiddleware)
 )
+sagaMiddleware.run(helloSaga)
+sagaMiddleware.run(watchIncrementAsync)
 
 const action = type => store.dispatch({type})
 
