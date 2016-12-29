@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yelouafi/redux-saga-beginner-tutorial.git"
+    "url": "git+https://github.com/redux-saga/redux-saga-beginner-tutorial.git"
   },
   "author": "Yassine ELOUAFI <yelouafi@gmail.com>",
   "license": "MIT",

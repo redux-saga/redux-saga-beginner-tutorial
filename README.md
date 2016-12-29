@@ -1,5 +1,5 @@
 # redux-saga-beginner-tutorial
-Companion Repo for [Redux/Redux-saga beginner tutorial](http://yelouafi.github.io/redux-saga/docs/introduction/BeginnerTutorial.html)
+Companion Repo for [Redux/Redux-saga beginner tutorial](http://redux-saga.github.io/redux-saga/docs/introduction/BeginnerTutorial.html)
 
 # Instructions
 
@@ -7,7 +7,7 @@ Setup
 
 ```
 // clone the repo
-git clone https://github.com/yelouafi/redux-saga-beginner-tutorial.git
+git clone https://github.com/redux-saga/redux-saga-beginner-tutorial.git
 
 cd redux-saga-beginner-tutorial
 
