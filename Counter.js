@@ -1,5 +1,6 @@
 /*eslint-disable no-unused-vars */
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync }) =>
       <div>
