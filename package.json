@@ -2,7 +2,7 @@
   "name": "redux-saga-beginner-tutorial",
   "version": "0.0.0",
   "description": "Redux Saga beginner tutorial",
-  "main": "lib/index.js",
+  "main": "main.js",
   "scripts": {
     "test": "babel-node sagas.spec.js | tap-spec",
     "start": "budo main.js:build.js --dir ./ --verbose  --live -- -t babelify"
