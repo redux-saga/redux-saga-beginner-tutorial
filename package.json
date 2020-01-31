@@ -4,8 +4,7 @@
   "description": "Redux Saga beginner tutorial",
   "main": "lib/index.js",
   "scripts": {
-    "test": "babel-node sagas.spec.js | tap-spec",
-    "test:simple": "babel-node ./simple-store/sagas/clone-generator.spec.js | tap-spec",
+    "test": "babel-node ./simple-store/sagas/index.spec.js | tap-spec",
     "start": "budo main.js:build.js --dir ./ --verbose  --live -- -t babelify"
   },
   "repository": {
@@ -16,16 +15,17 @@
   "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.8.3",
-    "@redux-saga/testing-utils": "^1.1.3",
     "axios": "^0.19.2",
     "babel-polyfill": "6.3.14",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "redux": "^3.3.1",
-    "redux-saga": "^0.15.0",
-    "redux-saga-test-plan": "^4.0.0-rc.3"
+    "redux-saga": "^0.15.0"
   },
   "devDependencies": {
+    "@redux-saga/is": "^1.1.2",
+    "@redux-saga/testing-utils": "^1.1.3",
+    "ava": "^3.1.0",
     "babel-cli": "^6.1.18",
     "babel-core": "^6.26.3",
     "babel-preset-es2015": "^6.1.18",
@@ -34,8 +34,8 @@
     "babel-watch": "^7.0.0",
     "babelify": "^7.2.0",
     "browserify": "^13.0.0",
-    "budo": "^8.0.4",
-    "tap-spec": "^4.1.1",
+    "budo": "^11.6.3",
+    "tap-spec": "^5.0.0",
     "tape": "^4.2.2"
   }
 }

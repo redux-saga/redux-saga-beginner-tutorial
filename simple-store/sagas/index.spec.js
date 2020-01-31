@@ -1,6 +1,7 @@
 import test from "tape";
-
 import { put, call } from "redux-saga/effects";
+import { cloneableGenerator } from "@redux-saga/testing-utils";
+
 import {
   helloSaga,
   incrementAsyncSaga,
@@ -11,7 +12,18 @@ import {
   sendSmsSaga,
   verifyXpubSaga
 } from "../sagas";
-
+import {
+  createUserSuccess,
+  createUserFail,
+  sendSmsSuccess,
+  sendSmsFail,
+  sendEmailSuccess,
+  sendEmailFail,
+  verifyEmailSuccess,
+  verifyEmailFail,
+  verifyXpubSuccess,
+  verifyXpubFail
+} from "../actions";
 import {
   createService,
   sendEmailService,
@@ -46,118 +58,148 @@ test("incrementAsyncSaga test case", assert => {
 });
 
 test("createUser test case", assert => {
-  const iterator = createUserSaga();
-  const payload = {
+  const gen = cloneableGenerator(createUserSaga)();
+  const result = {
     userDetails: {}
   };
+  const inputData = {
+    phone: "7466165312",
+    country_code: "44",
+    verification_code: "4935", // a 4-digit verification code,
+    email: "hemanth.vja@gmail.com",
+    bitcoin_address:
+      "AC8O0OCGMPMHMTSG28STQZ9HCCXC6VQ7OZGVW4LV4BYTBYINC4IOLZJGFIULNXLF",
+    initial_address_type: "simple"
+  };
 
-  assert.deepEqual(
-    iterator.next().value,
-    call(createService, {
-      phone: "7466165312",
-      country_code: "44",
-      verification_code: "4935", // a 4-digit verification code,
-      email: "hemanth.vja@gmail.com",
-      bitcoin_address:
-        "AC8O0OCGMPMHMTSG28STQZ9HCCXC6VQ7OZGVW4LV4BYTBYINC4IOLZJGFIULNXLF",
-      initial_address_type: "simple"
-    }),
-    "createService should yield an Effect call(createService, {})"
-  );
+  assert.test("if user details are not created", a => {
+    const clone = gen.clone();
+    clone.next();
 
-  assert.deepEqual(
-    iterator.next(payload).value,
-    put({ type: "CREATE_USER_FAIL" }),
-    "createService should yield an Effect put()"
-  );
+    a.deepEqual(
+      clone.next(result).value,
+      put(createUserFail()),
+      "shouldn't update the store"
+    );
 
-  assert.deepEqual(
-    iterator.next(),
-    { done: true, value: undefined },
-    "Iterator done"
-  );
+    a.equal(clone.next().done, true, "it should be done");
 
-  assert.end();
+    a.end();
+  });
+
+  assert.test("if user details are successfully created", a => {
+    const clone = gen.clone();
+
+    a.deepEqual(
+      clone.next().value,
+      call(createService, inputData),
+      "createService should yield an Effect call(createService, {})"
+    );
+
+    a.deepEqual(
+      clone.next(result).value,
+      put(createUserSuccess(result)),
+      "should update the store successfully"
+    );
+
+    a.equal(clone.next().done, true, "it should be done");
+
+    a.end();
+  });
 });
 
 test("sendEmail test case", assert => {
-  const gen = sendEmailSaga();
+  const gen = cloneableGenerator(sendEmailSaga)();
   const result = {
     success: true
   };
-  assert.deepEqual(
-    gen.next().value,
-    call(sendEmailService, { email: "hemanth.vja@gmail.com" }),
-    "sendEmailService should yied an Effect call(sendEmailService, {})"
-  );
-  /*
-  assert.deepEqual(
-    gen.next(result).value,
-    put({
-      type: "SEND_EMAIL_SUCCESS",
-      payload: { emailSent: true, emailSentDetails: undefined }
-    }),
-    "sendEmailService should yield an success message"
-  );
-*/
-  assert.deepEqual(
-    gen.next().value,
-    put({
-      type: "SEND_EMAIL_FAIL",
-      payload: { emailSent: false }
-    }),
-    "sendEmailService should yield a failed message"
-  );
 
-  assert.deepEqual(
-    gen.next(),
-    { done: true, value: undefined },
-    "Iterator done"
-  );
-  assert.end();
+  assert.test("if email sent successfully", a => {
+    const clone = gen.clone();
+
+    a.deepEqual(
+      clone.next().value,
+      call(sendEmailService, { email: "hemanth.vja@gmail.com" }),
+      "sendEmailService should yied an Effect call(sendEmailService, {})"
+    );
+
+    a.deepEqual(
+      clone.next(result).value,
+      put(sendEmailSuccess()),
+      "should update the store"
+    );
+
+    a.equal(clone.next().done, true, "it should be done");
+
+    a.end();
+  });
+
+  assert.test("if email sent failed", a => {
+    const clone = gen.clone();
+
+    clone.next();
+
+    a.deepEqual(
+      clone.next().value,
+      put(sendEmailFail()),
+      "need not update the store"
+    );
+
+    a.equal(clone.next().done, true, "it should be done");
+
+    a.end();
+  });
 });
 
 test("verifyEmail test case", assert => {
-  const gen = verifyEmailSaga();
+  const gen = cloneableGenerator(verifyEmailSaga)();
   const result = {
     success: true
   };
-  assert.deepEqual(
-    gen.next().value,
-    call(verifyEmailService, {
-      token: "WGRYTYEHDPUTRDDWCTGFGUIAIQZLGWGTE5Y4KYVGR9REGB9UQHNVCNPV3MMNDLDM"
-    }),
-    "verifyEmailService should yied an Effect call(emailService, {token})"
-  );
 
-  assert.deepEqual(
-    gen.next(result).value,
-    put({
-      type: "VERIFY_EMAIL_SUCCESS",
-      payload: { emailVerified: true, emailVerifiedDetails: undefined }
-    }),
-    "verifyEmailService should yield an success message"
-  );
-  /*
-  assert.deepEqual(
-    gen.next().value,
-    put({
-      type: "VERIFY_EMAIL_FAIL",
-      payload: { emailVerified: false }
-    }),
-    "verifyEmailService should yield a failed message"
-  );
-*/
-  assert.deepEqual(
-    gen.next(),
-    { done: true, value: undefined },
-    "Iterator done"
-  );
-  assert.end();
+  assert.test("if email verified correctly", a => {
+    const clone = gen.clone();
+    a.deepEqual(
+      clone.next().value,
+      call(verifyEmailService, {
+        token:
+          "WGRYTYEHDPUTRDDWCTGFGUIAIQZLGWGTE5Y4KYVGR9REGB9UQHNVCNPV3MMNDLDM"
+      }),
+      "verifyEmailService should yied an Effect call(emailService, {token})"
+    );
+
+    a.deepEqual(
+      clone.next(result).value,
+      put(verifyEmailSuccess()),
+      "verifyEmailService should yield an success message"
+    );
+    a.deepEqual(
+      clone.next(),
+      { done: true, value: undefined },
+      "Iterator done"
+    );
+    a.end();
+  });
+
+  assert.test("if email verified incorrectly", a => {
+    const clone = gen.clone();
+    clone.next();
+    a.deepEqual(
+      clone.next().value,
+      put(verifyEmailFail()),
+      "verifyEmailService should yield a fail message"
+    );
+    a.deepEqual(
+      clone.next(),
+      { done: true, value: undefined },
+      "Iterator done"
+    );
+    a.end();
+  });
 });
 
 test("sendSms test case", assert => {
-  const gen = sendSmsSaga();
+  const gen = cloneableGenerator(sendSmsSaga)();
   const result = {
     uuid: "b80698a0-c11d-0137-d628-0e1884c6f6fe",
     success: true,
@@ -166,43 +208,51 @@ test("sendSms test case", assert => {
     is_cellphone: true,
     carrier: "KPN BV"
   };
-  assert.deepEqual(
-    gen.next().value,
-    call(smsService, {
-      phone: 7466165312,
-      country_code: 44
-    }),
-    "verifySmsService should yied an Effect call(smsService, {})"
-  );
 
-  assert.deepEqual(
-    gen.next(result).value,
-    put({
-      type: "SEND_SMS_SUCCESS",
-      payload: { smsSent: true, smsSentDetails: result.data }
-    }),
-    "verifySmsService should yield an success message"
-  );
-  /*
-  assert.deepEqual(
-    gen.next().value,
-    put({
-      type: "SEND_SMS_FAIL",
-      payload: { smsSent: false }
-    }),
-    "verifySmsService should yield a failed message"
-  );
-*/
-  assert.deepEqual(
-    gen.next(),
-    { done: true, value: undefined },
-    "Iterator done"
-  );
-  assert.end();
+  assert.test("if sms sent successfully", a => {
+    const clone = gen.clone();
+    a.deepEqual(
+      clone.next().value,
+      call(smsService, {
+        phone: 7466165312,
+        country_code: 44
+      }),
+      "verifySmsService should yied an Effect call(smsService, {})"
+    );
+
+    a.deepEqual(
+      clone.next(result).value,
+      put(sendSmsSuccess()),
+      "verifySmsService should yield an success message"
+    );
+    a.deepEqual(
+      clone.next(),
+      { done: true, value: undefined },
+      "Iterator done"
+    );
+    a.end();
+  });
+
+  assert.test("if sms sent fail", a => {
+    const clone = gen.clone();
+    clone.next();
+
+    a.deepEqual(
+      clone.next().value,
+      put(sendSmsFail()),
+      "verifySmsService should yield a failure message"
+    );
+    a.deepEqual(
+      clone.next(),
+      { done: true, value: undefined },
+      "Iterator done"
+    );
+    a.end();
+  });
 });
 
 test("xPub test case", assert => {
-  const gen = verifyXpubSaga();
+  const gen = cloneableGenerator(verifyXpubSaga)();
   const result = {
     success: true,
     first_addresses: [
@@ -223,43 +273,41 @@ test("xPub test case", assert => {
       }
     ]
   };
-  assert.deepEqual(
-    gen.next().value,
-    call(xpubService, {
-      xpub_key:
-        "xpub6CojA7MuQ3TRPEkV6PRR6pzCqNBmNEKRG4gNmapeayeuwJxXYxCGz65DPVDfnXwHurpsbGgr9Noac4bY81XY3T42jKU1vcnVmQBr6LNgnXZ",
-      xpub_path: "m/0/x"
-    }),
-    "verifyXpubService should yied an Effect call(xpubService, {})"
-  );
 
-  assert.deepEqual(
-    gen.next(result).value,
-    put({
-      type: "VERIFY_XPUB_SUCCESS",
-      payload: {
-        xpubVerified: true,
-        xpubDetails: result.data
-      }
-    }),
-    "verifyXpubService should yield an success message"
-  );
-  /*
-  assert.deepEqual(
-    gen.next().value,
-    put({
-      type: "VERIFY_XPUB_FAIL",
-      payload: {
-        xpubVerified: false
-      }
-    }),
-    "verifyXpubService should yield a failed message"
-  );
-*/
-  assert.deepEqual(
-    gen.next(),
-    { done: true, value: undefined },
-    "Iterator done"
-  );
-  assert.end();
+  assert.test("xpub verified successfully", a => {
+    const clone = gen.clone();
+    a.deepEqual(
+      clone.next().value,
+      call(xpubService, {
+        xpub_key:
+          "xpub6CojA7MuQ3TRPEkV6PRR6pzCqNBmNEKRG4gNmapeayeuwJxXYxCGz65DPVDfnXwHurpsbGgr9Noac4bY81XY3T42jKU1vcnVmQBr6LNgnXZ",
+        xpub_path: "m/0/x"
+      }),
+      "verifyXpubService should yied an Effect call(xpubService, {})"
+    );
+
+    a.deepEqual(
+      clone.next(result).value,
+      put(verifyXpubSuccess()),
+      "verifyXpubService should yield an success message"
+    );
+    a.equal(clone.next().done, true, "Iterator done");
+    a.end();
+  });
+
+  assert.test("xpub verification failed", a => {
+    const clone = gen.clone();
+    clone.next();
+    a.deepEqual(
+      clone.next().value,
+      put(verifyXpubFail()),
+      "verifyXpubService should yield a fail message"
+    );
+    a.deepEqual(
+      clone.next(),
+      { value: undefined, done: true },
+      "Iterator done"
+    );
+    a.end();
+  });
 });

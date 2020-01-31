@@ -33,7 +33,7 @@ const INITIAL_STATE = {
   xpubVerifyRequest: null
 };
 
-const reducer = (state = INITIAL_STATE, action) => {
+const reducer = (state = {}, action) => {
   const { payload } = action;
   switch (action.type) {
     case INCREMENT:
