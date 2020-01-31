@@ -24,4 +24,5 @@ Run tests
 
 ```
 npm test
+npm test:simple
 ```
