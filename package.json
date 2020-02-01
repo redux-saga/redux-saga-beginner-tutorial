@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "babel-node ./simple-store/sagas/index.spec.js | tap-spec",
+    "test:reducers": "babel-node ./simple-store/reducers/index.spec.js | tap-spec",
     "start": "budo main.js:build.js --dir ./ --verbose  --live -- -t babelify"
   },
   "repository": {
@@ -35,6 +36,7 @@
     "babelify": "^7.2.0",
     "browserify": "^13.0.0",
     "budo": "^11.6.3",
+    "redux-saga-tester": "^1.0.674",
     "tap-spec": "^5.0.0",
     "tape": "^4.2.2"
   }

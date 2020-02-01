@@ -1,4 +1,4 @@
-import { all, takeLatest, put, call } from "redux-saga/effects";
+import { all, take, takeLatest, put, call } from "redux-saga/effects";
 import * as types from "../actions/types";
 
 import {
@@ -41,6 +41,7 @@ export function* decrementSaga() {
 }
 
 export function* createUserSaga() {
+  yield take(types.CREATE_USER_REQUEST);
   const result = yield call(createService, {
     phone: "7466165312",
     country_code: "44",
@@ -58,6 +59,7 @@ export function* createUserSaga() {
 }
 
 export function* sendEmailSaga(args) {
+  yield take(types.SEND_EMAIL_REQUEST);
   const result = yield call(sendEmailService, {
     email: "hemanth.vja@gmail.com"
   });
@@ -70,6 +72,7 @@ export function* sendEmailSaga(args) {
 }
 
 export function* sendSmsSaga(args) {
+  yield take(types.SEND_SMS_REQUEST);
   const result = yield call(smsService, {
     phone: 7466165312,
     country_code: 44
@@ -83,6 +86,7 @@ export function* sendSmsSaga(args) {
 }
 
 export function* verifyEmailSaga(args) {
+  yield take(types.VERIFY_EMAIL_REQUEST);
   const result = yield call(verifyEmailService, {
     token: "WGRYTYEHDPUTRDDWCTGFGUIAIQZLGWGTE5Y4KYVGR9REGB9UQHNVCNPV3MMNDLDM"
   });
@@ -95,6 +99,7 @@ export function* verifyEmailSaga(args) {
 }
 
 export function* verifyXpubSaga() {
+  yield take(types.VERIFY_XPUB_REQUEST);
   const result = yield call(xpubService, {
     xpub_key:
       "xpub6CojA7MuQ3TRPEkV6PRR6pzCqNBmNEKRG4gNmapeayeuwJxXYxCGz65DPVDfnXwHurpsbGgr9Noac4bY81XY3T42jKU1vcnVmQBr6LNgnXZ",
