@@ -1,7 +1,6 @@
 import test from 'tape';
 
-import { delay } from 'redux-saga'
-import { put, call } from 'redux-saga/effects'
+import { put, delay } from 'redux-saga/effects'
 import { incrementAsync } from './sagas'
 
 test('incrementAsync Saga test', (t) => {
@@ -9,7 +8,7 @@ test('incrementAsync Saga test', (t) => {
 
   t.deepEqual(
     generator.next().value,
-    call(delay, 1000),
+    delay(1000),
     'counter Saga must call delay(1000)'
   )
 
