@@ -16,9 +16,11 @@ function render() {
     <Counter
       value={store.getState()}
       onIncrement={() => action('INCREMENT')}
-      onDecrement={() => action('DECREMENT')} />,
+      onDecrement={() => action('DECREMENT')}
+      onReset={() => action('RESET')} />,
     document.getElementById('root')
   )
+  // console.log(value);
 }
 
 render()

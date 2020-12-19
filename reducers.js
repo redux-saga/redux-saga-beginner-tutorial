@@ -6,6 +6,8 @@ export default function counter(state = 0, action) {
       return (state % 2 !== 0) ? state + 1 : state
     case 'DECREMENT':
       return state - 1
+    case 'RESET':
+      return state = 0
     default:
       return state
   }
