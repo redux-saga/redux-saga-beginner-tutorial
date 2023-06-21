@@ -15,7 +15,6 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware))
 
 const dispatch = type => store.dispatch({ type })
 
-
 sagaMiddleware.run(watchIncrementAsync)
 
 function render() {
