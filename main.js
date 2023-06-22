@@ -32,11 +32,11 @@ export function* incrementAsync(){
 }
 
 
-// Watcher
-INCREMENT_ASYNC
-export function* watchIncrementAsync(){
-  yield takeEvery('INCREMENT_ASYNC', incrementAsync)
-}
+// // Watcher
+// INCREMENT_ASYNC
+// export function* watchIncrementAsync(){
+//   yield takeEvery('INCREMENT_ASYNC', incrementAsync)
+// }
 
 function render() {
   ReactDOM.render(
