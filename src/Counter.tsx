@@ -7,12 +7,12 @@ type CounterProps = {
   onIncrementAsync: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-const Counter: React.FC<CounterProps> = ({
+const Counter = ({
   value,
   onIncrement,
   onDecrement,
   onIncrementAsync,
-}) => (
+}: CounterProps) => (
   <div>
     <button onClick={onIncrementAsync}>Increment after 1 second</button>{" "}
     <button onClick={onIncrement}>Increment</button>{" "}
