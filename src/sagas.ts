@@ -7,7 +7,7 @@ function* helloSaga() {
 // delay function returns a promise that resolves after a set amount of time
 // blocks the generator
 // export for tests
-export const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 // Worker saga that performs the async increment task
 // yielded objects are kinda like "instructions" to middleware

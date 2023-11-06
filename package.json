@@ -4,8 +4,8 @@
   "description": "Redux Saga beginner tutorial",
   "main": "lib/index.js",
   "scripts": {
-    "test": "babel-node sagas.spec.js | tap-spec",
-    "start": "budo main.js:build.js --dir ./ --verbose  --live -- -t babelify"
+    "test": "babel-node ./dist/sagas.spec.js | tap-spec",
+    "start": "budo ./dist/main.js:build.js --dir ./ --verbose  --live -- -t babelify"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,12 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@reduxjs/toolkit": "^1.9.7",
-    "prop-types": "^15.7.2",
+    "@types/jest": "^29.5.7",
+    "@types/node": "^20.8.10",
+    "@types/react": "^18.2.35",
+    "@types/react-dom": "^18.2.14",
+    "@types/react-redux": "^7.1.28",
+    "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "redux": "^4.1.2",
@@ -27,6 +32,7 @@
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
+    "@types/tape": "^5.6.3",
     "babel-jest": "^29.7.0",
     "babelify": "^10.0.0",
     "browserify": "^17.0.0",
